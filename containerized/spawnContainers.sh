@@ -19,6 +19,7 @@ declare -a amAcids=("A" "R" "N" "D" "C" "Q" "E" "G" "H" "I" "L" "K"
 
 # runs rMutant with the given arguments
 # ARGS: pdbID chainID resNum mutTarget (optional)energyMinimization
+# TODO: make an arg for the image name
 runMutant () {
     sudo docker run multimutanttest $1 $2 $3 $4
 }
