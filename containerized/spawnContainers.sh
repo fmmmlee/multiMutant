@@ -21,7 +21,7 @@ declare -a amAcids=("A" "R" "N" "D" "C" "Q" "E" "G" "H" "I" "L" "K"
 # ARGS: pdbID chainID resNum mutTarget (optional)energyMinimization
 # TODO: make an arg for the image name
 runMutant () {
-    sudo docker run multimutanttest $1 $2 $3 $4 $5
+    sudo docker run -d -v ${PWD}/containeroutputs:/usr/multiMutant/output multimutanttest $1 $2 $3 $4 $5
 }
 
 
@@ -44,7 +44,7 @@ wget -q -O "${1}.pdb" "https://files.rcsb.org/download/${1}.pdb"
 mv -t "./multiMutant_image/" "${1}.pdb"
 
 #building docker image
-sudo docker build multimutanttest .
+sudo docker build -t multimutanttest .
 
 #loops over range of residues mutating each into all amino acids
 for ((i = $beginning; i <= end; i++));
