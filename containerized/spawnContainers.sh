@@ -5,6 +5,7 @@
 # JagResearch
 # MultiMutant
 # Spawns docker containers - requires superuser
+# Dockerfile should be in same folder as this script
 
 # SCRIPT ARGS:
 # pdbID
@@ -38,7 +39,12 @@ beginning=${3%:*}
 end=${3#*:}
 
 #download specified protein pdb file from rcsb
-wget -O $1 "${1}.pdb" "https://files.rcsb.org/download/${1}.pdb"
+wget -q -O "${1}.pdb" "https://files.rcsb.org/download/${1}.pdb"
+#move to folder that gets copied to docker container
+mv -t "./multiMutant_image/" "${1}.pdb"
+
+#building docker image
+sudo docker build multimutanttest .
 
 #loops over range of residues mutating each into all amino acids
 for ((i = $beginning; i <= end; i++));

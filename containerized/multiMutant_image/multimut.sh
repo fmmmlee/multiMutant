@@ -6,4 +6,4 @@
 # MultiMutant
 # entrypoint script for docker container
 
- ./rMutant $1 $2 $3 $4 $5
+./rMutant $1 $2 $3 $4 $5
