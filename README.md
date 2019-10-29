@@ -8,7 +8,8 @@ Depending on how effective this proves (particularly for larger workloads) it mi
 
 ### Todo
 - make appropriate changes to script run inside docker container
-  - `docker network create [...]` to allow containers to communicate with host
   - send output files to host
  - fix libstdc++5 being unresolved in rMutant on the container - change base image or add package in dockerfile?
-- change container-spawning script to take an image name as an argument
+- changes to host script
+  - take an image name as an argument
+  - `docker network create [...]` to allow containers to communicate with host
