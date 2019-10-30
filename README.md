@@ -9,6 +9,8 @@ Depending on how effective this proves (particularly for larger workloads) it mi
 ### Todo
 - make appropriate changes to script run inside docker container
   - send output files to host
+- dockerfile changes
+  - mount a volume instead of copying a directory containing the scripts and rMutant
 - changes to host script
   - take an image name as an argument
   - `docker network create [...]` to allow containers to communicate with host
