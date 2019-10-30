@@ -1,9 +1,8 @@
 #base
-FROM alpine:3.7
+FROM ubuntu:19.10
 
 #getting bash
-RUN apk update && apk add bash && apk add make && apk add libc6-compat && apk add libstdc++
-
+RUN apt-get update && apt-get install libstdc++5
 #copying rMutant
 COPY /multiMutant_image/ /usr/multiMutant/
 

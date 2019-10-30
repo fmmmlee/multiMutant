@@ -8,5 +8,5 @@
 
 ./rMutant $1 $2 $3 $4 $5
 
-mv *.txt /output/
-mv *.*.pdb /output/
+#mv *.txt /output/
+#mv *.*.pdb /output/

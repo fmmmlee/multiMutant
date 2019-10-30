@@ -21,7 +21,7 @@ declare -a amAcids=("A" "R" "N" "D" "C" "Q" "E" "G" "H" "I" "L" "K"
 # ARGS: pdbID chainID resNum mutTarget (optional)energyMinimization
 # TODO: make an arg for the image name
 runMutant () {
-    sudo docker run -d -v ${PWD}/containeroutputs:/usr/multiMutant/output multimutanttest $1 $2 $3 $4 $5
+    sudo docker run -d multimutanttest $1 $2 $3 $4 $5
 }
 
 
@@ -42,6 +42,8 @@ end=${3#*:}
 wget -q -O "${1}.pdb" "https://files.rcsb.org/download/${1}.pdb"
 #move to folder that gets copied to docker container
 mv -t "./multiMutant_image/" "${1}.pdb"
+
+#chmod +x ./multiMutant_image/multimut.sh
 
 #building docker image
 sudo docker build -t multimutanttest .
