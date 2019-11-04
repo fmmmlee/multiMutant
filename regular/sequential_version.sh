@@ -19,10 +19,10 @@ declare -a amAcids=("A" "R" "N" "D" "C" "Q" "E" "G" "H" "I" "L" "K"
 # runs rMutant with the given arguments
 # ARGS: pdbID chainID resNum mutTarget (optional)energyMinimization
 runMutant () {
-    # non-parallel processing works fine, very slow (time measured in dozens of seconds)
-    # ISSUE: spawning new processes - rMutant appears to create temporary config files and access issues occur since they share the filename - only about half of the mutations are successfully completed
-    # SOLUTION?: copy rMutant into subdirectories, run there, move output to main dir, delete subdir afterwards? if running distributed, would not be an issue (since rMutant would presumably have its own instance on each VM/system)
-    ./rMutant $1 $2 $3 $4 $5
+    #need to find way to track what forks have died to perform file operations
+    #after all rMutants have finished
+    #For debugging add this to end of script: && echo "Mutation of $3 to $4 complete." &
+    ./rMutant $1 $2 $3 $4 $5 &>/dev/null
 }
 
 
@@ -35,12 +35,28 @@ allTargets() {
      done
 }
 
+
+#download specified protein pdb file from rcsb
+wget -q -O "${1}.pdb" "https://files.rcsb.org/download/${1}.pdb"
+
 #grabbing range of residues (inclusive)
 beginning=${3%:*}
 end=${3#*:}
+
+#make output folder if it doesn't exist
+if [ ! -d output ];
+then
+	mkdir output
+fi
 
 #loops over range of residues mutating each into all amino acids
 for ((i = $beginning; i <= end; i++));
 do
     allTargets $1 $2 $i
 done
+
+#move pdb and txt files to output folder
+mv *.*.pdb *.txt ./output -f
+
+#remove wal type
+rm "${1}.pdb"
