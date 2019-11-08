@@ -48,7 +48,7 @@ runMutant () {
     #need to find way to track what forks have died to perform file operations
     #after all rMutants have finished
     #For debugging add this to end of script: && echo "Mutation of $3 to $4 complete." &
-    ./rMutant $1 $2 $3 $4 $5 &>/dev/null
+    ./rMutant $1 $2 $3 $4 $5 &>/dev/null && mv $1.$2$3$4.pdb $1.$2$3$4_em.pdb $1.$2$3$4.fasta.txt ./output -f 2>/dev/null &
 }
 
 
@@ -99,4 +99,4 @@ do
 done
 
 #move pdb and txt files to output folder
-mv *.*.pdb *.txt ./output -f
+# mv *.*.pdb *.txt ./output -f
