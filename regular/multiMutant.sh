@@ -49,16 +49,16 @@ runMutant () {
     #need to find way to track what forks have died to perform file operations
     #after all rMutants have finished
     #For debugging add this to end of script: && echo "Mutation of $3 to $4 complete." &
-    ./rMutant $1 $2 $3 $4 $5 &>/dev/null && mkdir output/$1.$2$3$4 && mv $1.$2$3$4.pdb $1.$2$3$4_em.pdb $1.$2$3$4.fasta.txt ./output/$1.$2$3$4 -f 2>/dev/null &
+    ./rMutant $1 $2 $3 $4 $5 &>/dev/null && mkdir $6_out/$1.$2$3$4 && mv $1.$2$3$4.pdb $1.$2$3$4_em.pdb $1.$2$3$4.fasta.txt ./$6_out/$1.$2$3$4 -f 2>/dev/null &
 }
 
 
 #calls runMutant for each amino acid type
-# ARGS: pdbID chainID resNum
+# ARGS: pdbID chainID resNum foldername
 allTargets() {
      for j in "${amAcids[@]}"
      do
-        runMutant $1 $2 $3 $j $4
+        runMutant $1 $2 $3 $j $4 $5
      done
 }
 
@@ -88,15 +88,15 @@ beginning=${3%:*}
 end=${3#*:}
 
 #make output folder if it doesn't exist
-if [ ! -d output ];
+if [ ! -d $1$2$3_out ];
 then
-	mkdir output
+	mkdir $1$2$3_out
 fi
 
 #loops over range of residues mutating each into all amino acids
 for ((i = $beginning; i <= end; i++));
 do
-    allTargets $1 $2 $i $ENERMIN
+    allTargets $1 $2 $i $ENERMIN $1$2$3
 done
 
 

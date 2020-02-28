@@ -5,36 +5,20 @@
 # JagResearch
 # MultiMutant
 
+#should be copied to the output folder after multiMutant runs
 
 # ARGS
-# pipeline location
 # number of instances to create
-# 
+# args for Kinari script
 
 
 
 
 ###### EXECUTED PART ######
-# creating folder to hold instances of rMutant-pipeline
-if[ ! -d pipelineInstances];
-then
-	mkdir pipelineInstances
-fi
-
-# creating subfolders for each instance of the pipeline
-for((i = 1; i <= $2; i++));
-do
-	cp -R $1 pipelineInstances/rMutant-pipeline$i
-done
-
-# need to assign different tasks to different processes
-# basically ls the output folder with x entries, and 
-# each instance gets passed x/numOfInstances folders
-# to work in
-# then each process continues by:
-# sequentially copying input from first folder,
-# running pipeline,
-# copying in/output back to first folder,
-# copying input from second folder....etc
-
+# copy pipeline to each folder at the current directory level and run with appropriate arguments
+# do say 20 at a time
+# ls, pipe first 20 entries of ls into a cp statement (cp [ls output entry as dest] [pipeline src])
+# in 20 separate processes, invoke the pipeline with appropriate arguments
+# wait certain amount of time (30 sec, 1 min, whatever) then do for next 20 entries of ls, until end of ls is reached
+# have cleanup function that checks after x minutes to see if output is in a folder where Kinari pipeline was run, if so, then delete the pipeline from that folder
 
