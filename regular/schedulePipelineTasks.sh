@@ -25,6 +25,12 @@ progress = 0
 #number of pipelines to be running at once
 target = $2
 
+# create internal pipeline cluster if not present
+
+# choose indices based on # of pipelines and size of directories arr
+
+# start invokePipelineOnMutants.py as another process for each set of dirs
+
 while ${#directories[@]} > progress;
 do
 	for progress < target;
@@ -50,8 +56,3 @@ do
 
 	#wait 1 minute
 done
-
-
-# have cleanup function that checks after x minutes to see if output is in a folder where
-# Kinari pipeline was run, if so, then delete the pipeline from that folder
-
