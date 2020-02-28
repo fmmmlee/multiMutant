@@ -5,20 +5,53 @@
 # JagResearch
 # MultiMutant
 
-#should be copied to the output folder after multiMutant runs
+###### ARGUMENTS ######
 
-# ARGS
-# number of instances to create
-# args for Kinari script
+# $1 = location of pipeline
+# $2 = number of instances to create
+# $3 = {pdbID}.{chainID}
+
+###### NOTES ######
+
+# this script is intended to be used inside the output
+# folder of a successful invocation of multiMutant
+
+###### SCRIPT ######
+
+#list of subdirectories containing output of multiMutant
+directories=$(ls -d */)
+#total number of pipelines created
+progress = 0
+#number of pipelines to be running at once
+target = $2
+
+while ${#directories[@]} > progress;
+do
+	for progress < target;
+	do
+		#copy pipeline into subdirectory
+		cp $1 directories[progress]
+		
+		#cd into subdirectory
+		cd directories[progress]
+
+		#copy input files into pipeline input folder
+		cp *_em.pdb WT_C/data/$3.cur.in
+		#start pipeline in separate process
+		./invokePipeline_WT.sh #todo
+
+		#then in that process copy output to top level directory and delete pipeline
+
+		#return to parent dir
+		cd ..
+	done
+
+	target *= 2
+
+	#wait 1 minute
+done
 
 
-
-
-###### EXECUTED PART ######
-# copy pipeline to each folder at the current directory level and run with appropriate arguments
-# do say 20 at a time
-# ls, pipe first 20 entries of ls into a cp statement (cp [ls output entry as dest] [pipeline src])
-# in 20 separate processes, invoke the pipeline with appropriate arguments
-# wait certain amount of time (30 sec, 1 min, whatever) then do for next 20 entries of ls, until end of ls is reached
-# have cleanup function that checks after x minutes to see if output is in a folder where Kinari pipeline was run, if so, then delete the pipeline from that folder
+# have cleanup function that checks after x minutes to see if output is in a folder where
+# Kinari pipeline was run, if so, then delete the pipeline from that folder
 
