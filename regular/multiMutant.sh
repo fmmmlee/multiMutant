@@ -49,7 +49,7 @@ runMutant () {
     #need to find way to track what forks have died to perform file operations
     #after all rMutants have finished
     #For debugging add this to end of script: && echo "Mutation of $3 to $4 complete." &
-    ./rMutant $1 $2 $3 $4 $5 &>/dev/null && mkdir $6_out/$1.$2$3$4 && mv $1.$2$3$4.pdb $1.$2$3$4_em.pdb $1.$2$3$4.fasta.txt ./$6_out/$1.$2$3$4 -f 2>/dev/null &
+    ./rMutant $1 $2 $3 $4 $5 &>/dev/null && mkdir ../$6_out/$1.$2$3$4 && mv $1.$2$3$4.pdb $1.$2$3$4_em.pdb $1.$2$3$4.fasta.txt ../$6_out/$1.$2$3$4 -f 2>/dev/null &
 }
 
 
@@ -64,6 +64,12 @@ allTargets() {
 
 
 ###### EXECUTED PART ######
+
+if [ ! -d rMutant ];
+then
+	mkdir rMutant
+	#clone proMutant into this dir
+fi
 
 #handle flags
 for flag in "$@"
@@ -81,7 +87,7 @@ do
 done
 
 #download specified protein pdb file from rcsb
-wget -q -O "${1}.pdb" "https://files.rcsb.org/download/${1}.pdb"
+wget -q -O "rMutant/${1}.pdb" "https://files.rcsb.org/download/${1}.pdb"
 
 #grabbing range of residues (inclusive)
 beginning=${3%:*}
@@ -92,6 +98,9 @@ if [ ! -d $1$2$3_out ];
 then
 	mkdir $1$2$3_out
 fi
+
+#cd-ing into folder containing rMutant
+cd rMutant
 
 #loops over range of residues mutating each into all amino acids
 for ((i = $beginning; i <= end; i++));
