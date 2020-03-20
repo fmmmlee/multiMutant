@@ -8,10 +8,9 @@
 ###### NOTES ######
 # script takes no arguments
 
-# this script should be copied by multiMutant.sh into the top level of the output directory generated when multiMutant.sh is run
+# this script is copied by multiMutant.sh into the top level of the output directory generated when multiMutant.sh is run
 
 # TODO: this script should check for existence of pipeline and if not present invoke create_minimal_pipeline.sh in parent dir
-
 # modifications for parallel testing are just changing tasks to be args instead of the whole list of subdirs and having an arg for moving in/out a particular pipeline instance dir
 
 ###### SCRIPT ######
@@ -23,6 +22,11 @@ outputFolder = `echo $PWD`	# eg. 1R6JA195:196_out
 pdbID = ${outputFolder:0:4}	# eg. 1R6J
 chainID = ${outputFolder:4:1}	# eg. A
 
+# create pipeline if it doesn't exist
+if [ ! -d ../rMutant-pipeline ];
+then
+	../create_minimal_pipeline.sh
+fi
 
 for subdir in directories
 do

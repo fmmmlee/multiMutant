@@ -7,14 +7,15 @@
 
 ###### ARGUMENTS ######
 
-# $1 = location of pipeline
-# $2 = number of instances to create
+# $1 = output folder to process
 # $3 = {pdbID}.{chainID}
 
 ###### NOTES ######
 
-# this script is intended to be used inside the output
-# folder of a successful invocation of multiMutant
+# this script should reside at the same level as multiMutant.sh
+# a folder containing individual instances of the Kinari pipeline (./pipeline/instance_{num}/{the pipeline}) should also be present
+
+#hb+ parallel processing potential issues
 
 ###### SCRIPT ######
 
@@ -26,6 +27,7 @@ progress = 0
 target = $2
 
 # create internal pipeline cluster if not present
+
 
 # choose indices based on # of pipelines and size of directories arr
 

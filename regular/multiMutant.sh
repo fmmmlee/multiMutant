@@ -20,6 +20,8 @@
 # rename wl type to something in the vein of "WL_$1".pdb
 # maybe change flag structure to be "-flag=something" and/or change to use getopts or equiv.
 
+# TODO: Download proMutant/rMutant if it doesn't exist
+
 ###### VARIABLE AND FUNCTION DECLARATIONS/DEFINITIONS ######
 
 ### Amino Acids ###
@@ -98,6 +100,9 @@ if [ ! -d $1$2$3_out ];
 then
 	mkdir $1$2$3_out
 fi
+
+#copying pipeline invocation script into output folder
+cp sequentialPipelineInvocation.sh $1$2$3_out.sequentialPipelineInvocation.sh
 
 #cd-ing into folder containing rMutant
 cd rMutant
