@@ -66,11 +66,14 @@ allTargets() {
 
 
 ###### EXECUTED PART ######
-
-if [ ! -d rMutant ];
+# Download proMutant/rMutant if it doesn't exist
+if [ ! -d promute ];
 then
-	mkdir rMutant
-	#clone proMutant into this dir
+	git clone https://gitlab.cs.wwu.edu/carpend3/promute.git
+	mv promute promute-src
+	mv promute-src/build promute
+	rm -rf promute-src
+	
 fi
 
 #handle flags
@@ -89,7 +92,7 @@ do
 done
 
 #download specified protein pdb file from rcsb
-wget -q -O "rMutant/${1}.pdb" "https://files.rcsb.org/download/${1}.pdb"
+wget -q -O "promute/${1}.pdb" "https://files.rcsb.org/download/${1}.pdb"
 
 #grabbing range of residues (inclusive)
 beginning=${3%:*}
@@ -101,11 +104,15 @@ then
 	mkdir $1$2$3_out
 fi
 
-#copying pipeline invocation script into output folder
-cp sequentialPipelineInvocation.sh $1$2$3_out.sequentialPipelineInvocation.sh
+#copying pipeline invocation script into output folder ?and giving it permissions?
+cp sequentialPipelineInvocation.sh $1$2$3_out/sequentialPipelineInvocation.sh
+# (below might not be necessary)
+#cd $1$2$3_out 
+#chmod +x sequentialPipelineInvocation.sh
+#cd ..
 
 #cd-ing into folder containing rMutant
-cd rMutant
+cd promute
 
 #loops over range of residues mutating each into all amino acids
 for ((i = $beginning; i <= end; i++));
