@@ -40,7 +40,7 @@ When invoking the pipeline script for the first time, it will download and set u
 
 ### Known Issues/TODO
 
+- Having a full clone/build process when running the pipeline for the first time on a machine is quite time-consuming. An option to alleviate this would to be have an archive containing a   complete prebuilt pipeline posted in a private Gitlab repo's releases page. Periodic checks would need to be run to make sure that the binaries are current with the source repos and rebuild and repackage if necessary; this could be done periodically using one of a number of CI services or be manually performed by project contributors.
 - The pipeline invocation script will attempt to copy empty files as input to the pipeline and will also invoke the pipeline when no input has been copied from a source directory.
-
-- Both multimutant and the pipeline invocation scripts lack descriptive console messages to describe what is occurring.
+- Both multimutant and the pipeline invocation scripts lack sufficiently descriptive console messages to describe what is occurring.
 - It would be useful to have the argument lists and descriptions of each script added to this readme file.
