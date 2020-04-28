@@ -25,7 +25,9 @@ chainID=${outputFolder:4:1}	# eg. A
 if [ ! -d ../rMutant-pipeline ];
 then
 	echo "pipeline not found, creating..."
-	../create_minimal_pipeline.sh
+	cd ..
+	./create_minimal_pipeline.sh
+	cd ${outputFolder}
 fi
 
 for subdir in */
