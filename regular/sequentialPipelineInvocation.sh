@@ -35,7 +35,8 @@ do
 	# copy input pdb into pipeline	
 	echo "Copying input from " $subdir " into pipeline"
 	cp ${subdir::-1}/${subdir::-1}_em.pdb ${subdir::-1}/${pdbID}.pdb
-	mkdir ../rMutant-pipeline/WT_C/data/${pdbID}.${chainID}.cur.in; mv ${subdir::-1}/${pdbID}.pdb $_
+	mkdir ../rMutant-pipeline/WT_C/data/${pdbID}.${chainID}.cur.in
+	mv ${subdir::-1}/${pdbID}.pdb ../rMutant-pipeline/WT_C/data/${pdbID}.${chainID}.cur.in/${pdbID}.pdb
 
 
 	# run pipeline
