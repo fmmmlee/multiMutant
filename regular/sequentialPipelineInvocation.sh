@@ -38,7 +38,11 @@ do
 	mkdir ../rMutant-pipeline/WT_C/data/${pdbID}.${chainID}.cur.in
 	mv ${subdir::-1}/${pdbID}.pdb ../rMutant-pipeline/WT_C/data/${pdbID}.${chainID}.cur.in/${pdbID}.pdb
 
-
+	if[![-f ../rMutant-pipeline/WT_C/data/${pdbID}.${chainID}.cur.in/${pdbID}.pdb]]
+	then
+		continue
+	fi
+	
 	# run pipeline
 	echo "Invoking pipeline"
 	cd ../rMutant-pipeline
