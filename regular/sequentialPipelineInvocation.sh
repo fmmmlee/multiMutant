@@ -32,14 +32,26 @@ fi
 
 for subdir in */
 do
+	echo "##################################"
+	echo "###### MULTIMUTANT-PIPELINE ######"
+	echo "##################################"
+	
 	# copy input pdb into pipeline	
 	echo "Copying input from " $subdir " into pipeline"
-	cp ${subdir::-1}/${subdir::-1}_em.pdb ${subdir::-1}/${pdbID}.pdb
+	
+	if[![-f ${subdir::-1}/${subdir::-1}_em.pdb]];
+	then
+		cp ${subdir::-1}/${subdir::-1}.pdb ${subdir::-1}/${pdbID}.pdb
+	else
+		cp ${subdir::-1}/${subdir::-1}_em.pdb ${subdir::-1}/${pdbID}.pdb
+	fi
+
 	mkdir ../rMutant-pipeline/WT_C/data/${pdbID}.${chainID}.cur.in
 	mv ${subdir::-1}/${pdbID}.pdb ../rMutant-pipeline/WT_C/data/${pdbID}.${chainID}.cur.in/${pdbID}.pdb
 
 	if[![-f ../rMutant-pipeline/WT_C/data/${pdbID}.${chainID}.cur.in/${pdbID}.pdb]];
 	then
+		echo "Input files not found in pipeline, skipping pipeline execution."
 		continue
 	fi
 	
@@ -49,10 +61,13 @@ do
 	./invokePipeline_WT.sh ${pdbID} ${chainID}
 
 	# copy output back to ${subdir}
+	echo "###### MULTIMUTANT-PIPELINE ######"
 	echo "Copying output to source directory"
 	cp -r ./WT_C/data/${pdbID}.${chainID}.cur.out ../${outputFolder}/${subdir::-1}/${pdbID}.${chainID}.cur.out_C
 	cp -r ./WT_RA/data/${pdbID}.${chainID}.ra.out ../${outputFolder}/${subdir::-1}/${pdbID}.${chainID}.ra.out_RA
 	cp -r ./WT_RA/data/${pdbID}.${chainID}.cur.out ../${outputFolder}/${subdir::-1}/${pdbID}.${chainID}.cur.out_RA
+
+	
 
 	# clear input/output
 	./cleanPipeline.sh
