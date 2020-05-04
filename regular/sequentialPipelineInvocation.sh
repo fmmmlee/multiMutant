@@ -39,7 +39,7 @@ do
 	# copy input pdb into pipeline	
 	echo "Copying input from " $subdir " into pipeline"
 	
-	if[![-f ${subdir::-1}/${subdir::-1}_em.pdb]];
+	if[! -f ${subdir::-1}/${subdir::-1}_em.pdb];
 	then
 		cp ${subdir::-1}/${subdir::-1}.pdb ${subdir::-1}/${pdbID}.pdb
 	else
@@ -49,7 +49,7 @@ do
 	mkdir ../rMutant-pipeline/WT_C/data/${pdbID}.${chainID}.cur.in
 	mv ${subdir::-1}/${pdbID}.pdb ../rMutant-pipeline/WT_C/data/${pdbID}.${chainID}.cur.in/${pdbID}.pdb
 
-	if[![-f ../rMutant-pipeline/WT_C/data/${pdbID}.${chainID}.cur.in/${pdbID}.pdb]];
+	if[! -f ../rMutant-pipeline/WT_C/data/${pdbID}.${chainID}.cur.in/${pdbID}.pdb];
 	then
 		echo "Input files not found in pipeline, skipping pipeline execution."
 		continue
