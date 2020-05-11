@@ -32,14 +32,21 @@ then
 	cd ${outputFolder}
 fi
 
+counter = 1
+total_jobs=$(ls -l | grep -c ^d)
+
 for subdir in */
 do
-	echo "##################################"
-	echo "###### MULTIMUTANT-PIPELINE ######"
-	echo "##################################"
-	
-	# copy input pdb into pipeline	
-	echo "Copying input from " $subdir " into pipeline"
+	printf "${counter}/${total_jobs}"$'\r'
+	if [ "${1}" == "-v" ];
+	then
+		echo "##################################"
+		echo "###### MULTIMUTANT-PIPELINE ######"
+		echo "##################################"
+
+		# copy input pdb into pipeline	
+		echo "Copying input from " $subdir " into pipeline"
+	fi
 	
 	if [ ! -f ${subdir::-1}/${subdir::-1}_em.pdb ];
 	then
@@ -58,13 +65,22 @@ do
 	fi
 	
 	# run pipeline
-	echo "Invoking pipeline"
 	cd ../rMutant-pipeline
-	./invokePipeline_WT.sh ${pdbID} ${chainID}
+
+	# if verbose
+	if [ "${1}" == "-v" ];
+	then
+		echo "Invoking pipeline"
+		./invokePipeline_WT.sh ${pdbID} ${chainID}
+
+		echo "###### MULTIMUTANT-PIPELINE ######"
+		echo "Copying output to source directory"
+	else
+		#TODO this should write to a log file
+		./invokePipeline_WT.sh ${pdbID} ${chainID} &>/dev/null
+	fi
 
 	# copy output back to ${subdir}
-	echo "###### MULTIMUTANT-PIPELINE ######"
-	echo "Copying output to source directory"
 	cp -r ./WT_C/data/${pdbID}.${chainID}.cur.out ../${outputFolder}/${subdir::-1}/${pdbID}.${chainID}.cur.out_C
 	cp -r ./WT_RA/data/${pdbID}.${chainID}.ra.out ../${outputFolder}/${subdir::-1}/${pdbID}.${chainID}.ra.out_RA
 	cp -r ./WT_RA/data/${pdbID}.${chainID}.cur.out ../${outputFolder}/${subdir::-1}/${pdbID}.${chainID}.cur.out_RA
@@ -72,13 +88,17 @@ do
 	
 
 	# clear input/output
-	./cleanPipeline.sh
+	./cleanPipeline.sh &>/dev/null
 
-	echo "Finished, next job..."	
+	if [ "${1}" == "-v" ];
+	then
+		echo "Finished, next job..."	
+	fi
 
 	# return to output dir to be ready for next iteration
 	cd ../${outputFolder}
 	
+	let "counter++"
 done
 
 echo "Finished all jobs, exiting."
