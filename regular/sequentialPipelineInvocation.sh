@@ -5,6 +5,8 @@
 # JagResearch
 # MultiMutant
 
+# TODO: Make default a progress bar/# completed indicator, have -v flag to give all the output
+
 ###### NOTES ######
 # script takes no arguments
 

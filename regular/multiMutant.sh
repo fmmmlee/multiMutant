@@ -18,9 +18,7 @@
 # CHANGES TO MAKE:
 # count args/warn for incorrect flags/args
 # rename wl type to something in the vein of "WL_$1".pdb
-# maybe change flag structure to be "-flag=something" and/or change to use getopts or equiv.
-
-# TODO: Download proMutant/rMutant if it doesn't exist
+# add flag for logging output to a file
 
 ###### VARIABLE AND FUNCTION DECLARATIONS/DEFINITIONS ######
 
@@ -92,7 +90,10 @@ do
 done
 
 #download specified protein pdb file from rcsb
-wget -q -O "promute/${1}.pdb" "https://files.rcsb.org/download/${1}.pdb"
+if [ ! -f "promute/${1}.pdb" ]
+then
+	wget -q -O "promute/${1}.pdb" "https://files.rcsb.org/download/${1}.pdb"
+fi
 
 #grabbing range of residues (inclusive)
 beginning=${3%:*}
