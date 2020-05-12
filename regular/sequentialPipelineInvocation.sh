@@ -22,6 +22,8 @@ directories=${*/}
 outputFolder=${PWD##*/}	# eg. 1R6JA195:196_out
 pdbID=${outputFolder:0:4}	# eg. 1R6J
 chainID=${outputFolder:4:1}	# eg. A
+counter=1
+total_jobs=$(ls -l | grep -c ^d)
 
 # create pipeline if it doesn't exist
 if [ ! -d ../rMutant-pipeline ];
@@ -32,21 +34,26 @@ then
 	cd ${outputFolder}
 fi
 
-counter = 1
-total_jobs=$(ls -l | grep -c ^d)
+redirect=/dev/null;
+
+if [ "${1}" == "-v" ];
+then
+	redirect=/dev/stdout;
+fi
 
 for subdir in */
 do
 	printf "${counter}/${total_jobs}"$'\r'
-	if [ "${1}" == "-v" ];
-	then
-		echo "##################################"
-		echo "###### MULTIMUTANT-PIPELINE ######"
-		echo "##################################"
+	
+	{
 
-		# copy input pdb into pipeline	
-		echo "Copying input from " $subdir " into pipeline"
-	fi
+	echo "##################################"
+	echo "###### MULTIMUTANT-PIPELINE ######"
+	echo "##################################"
+
+	# copy input pdb into pipeline	
+	echo "Copying input from " $subdir " into pipeline"
+
 	
 	if [ ! -f ${subdir::-1}/${subdir::-1}_em.pdb ];
 	then
@@ -67,18 +74,12 @@ do
 	# run pipeline
 	cd ../rMutant-pipeline
 
-	# if verbose
-	if [ "${1}" == "-v" ];
-	then
-		echo "Invoking pipeline"
-		./invokePipeline_WT.sh ${pdbID} ${chainID}
+	echo "Invoking pipeline"
+	./invokePipeline_WT.sh ${pdbID} ${chainID}
 
-		echo "###### MULTIMUTANT-PIPELINE ######"
-		echo "Copying output to source directory"
-	else
-		#TODO this should write to a log file
-		./invokePipeline_WT.sh ${pdbID} ${chainID} &>/dev/null
-	fi
+	echo "###### MULTIMUTANT-PIPELINE ######"
+	echo "Copying output to source directory"
+
 
 	# copy output back to ${subdir}
 	cp -r ./WT_C/data/${pdbID}.${chainID}.cur.out ../${outputFolder}/${subdir::-1}/${pdbID}.${chainID}.cur.out_C
@@ -88,17 +89,16 @@ do
 	
 
 	# clear input/output
-	./cleanPipeline.sh &>/dev/null
+	./cleanPipeline.sh
 
-	if [ "${1}" == "-v" ];
-	then
-		echo "Finished, next job..."	
-	fi
+	echo "Finished, next job..."	
 
 	# return to output dir to be ready for next iteration
 	cd ../${outputFolder}
 	
 	let "counter++"
+
+	} &> $redirect
 done
 
 echo "Finished all jobs, exiting."
