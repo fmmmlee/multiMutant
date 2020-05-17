@@ -49,7 +49,7 @@ runMutant () {
     #need to find way to track what forks have died to perform file operations
     #after all rMutants have finished
     #For debugging add this to end of script: && echo "Mutation of $3 to $4 complete." &
-    ./rMutant $1 $2 $3 $4 $5 &>/dev/null && mkdir ../$6_out/$1.$2$3$4 && mv $1.$2$3$4.pdb $1.$2$3$4_em.pdb $1.$2$3$4.fasta.txt ../$6_out/$1.$2$3$4 -f 2>/dev/null &
+    ./proMute $1 $2 $3 $4 $5 &>/dev/null && mkdir ../$6_out/$1.$2$3$4 && mv $1.$2$3$4.pdb $1.$2$3$4_em.pdb $1.$2$3$4.fasta.txt ../$6_out/$1.$2$3$4 -f 2>/dev/null &
 }
 
 
@@ -68,6 +68,9 @@ allTargets() {
 if [ ! -d promute ];
 then
 	git clone https://gitlab.cs.wwu.edu/carpend3/promute.git
+	cd promute
+	make
+	cd ..
 	mv promute promute-src
 	mv promute-src/build promute
 	rm -rf promute-src
