@@ -20,9 +20,9 @@ cd rMutant-pipeline
 
 # getting rid of stuff used to build pipeline
 cd ..
-mv rMutant-pipeline pipeline-src
-mv pipeline-src/rMutant-pipeline rMutant-pipeline
-rm -rf pipeline-src
+# mv rMutant-pipeline pipeline-src
+# mv pipeline-src/rMutant-pipeline rMutant-pipeline
+# rm -rf pipeline-src
 cd rMutant-pipeline
 
 # delete files/folders not used by multiMutant
