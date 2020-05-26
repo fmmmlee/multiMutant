@@ -75,7 +75,7 @@ do
 	cd ../rMutant-pipeline
 
 	echo "Invoking pipeline"
-	./invokePipeline_WT.sh ${pdbID} ${chainID}
+	./invokePipeline_WT.sh ${pdbID} "all"
 
 	echo "###### MULTIMUTANT-PIPELINE ######"
 	echo "Copying output to source directory"
