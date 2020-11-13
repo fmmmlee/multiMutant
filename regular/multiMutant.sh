@@ -54,7 +54,7 @@ runMutant () {
 	if [ $5 == "em" ];
 	then
 		echo "Mutating $1 on chain $2 at residue $3 to $4"
-		./proMute $1 $2 $3 $4 $5 &>/dev/null && mkdir ../$6_out/$1.$2$3$4 && mv *$1.$2$3$4* ../$6_out/$1.$2$3$4 -f 2>/dev/null
+		./proMute $1 $2 $3 $4 $5 &>/dev/null && mkdir ../$6_out/$1.$2$3$4 && mv *$1.$2$3$4* ../$6_out/$1.$2$3$4 -f && mv ./external/em/$1.$2$3$4 ../$6_out/$1.$2$3$4/em -f 2>/dev/null
 	else
 		./proMute $1 $2 $3 $4 $5 &>/dev/null && mkdir ../$6_out/$1.$2$3$4 && mv *$1.$2$3$4* ../$6_out/$1.$2$3$4 -f 2>/dev/null &
 	fi    
